@@ -4,35 +4,58 @@ import { useEffect, useState } from "react";
 export default function Tools() {
   const url = "https://historical-dash.herokuapp.com/get-all-members"
   const [displayMem, setDisplayMem] = useState(false)
-  const [memNames, setMemNames] = useState([])
+  const [memData, setMemData] = useState([])
   const [searchInput, setSearchInput] = useState("")
+  const [member, setMember] = useState("")
 
 
   const getMembers = async (student) => {
     try {
       const resp = await fetch(url)
       const data = await resp.json()
-      const names = data.map((member) => {
-        return (
-          member.name.toLowerCase()
-        )
-      })
-      setMemNames(names)
+      setMemData(data)
     } catch (error) {
       console.log(error)
     }
   }
-  const handleSearch = (input) => {
-    var lowerCase = input.target.value.toLowerCase()
-    setSearchInput(lowerCase)
+  const getInput = (input) => {
+    var lc = input.target.value.toLowerCase()
+    setSearchInput(lc)
   }
-  useEffect(() => {
-    getMembers()
-  }, [])
+  const handleSearch = (e) => {
+    if (e.key === "Enter") {
+      getMembers()
+      const mem = memData.filter((member) => {
+        return (
+          member.name === searchInput
+        )
+      })
+      if (mem.length > 0) {
+        setMember(mem[0])
+        setDisplayMem(true)
+      }
+    }
+  }
+  const memDisplay = () => {
+    if (displayMem === true) {
+      return (
+        <div>
+          <p>{member.name}</p>
+          <p>{member.fun_fact}</p>
+        </div>
+      )
+    } else {
+      return (
+        <p>No one of that name T.T</p>
+      )
+    }
+  }
   return (
     <div>
-      <input type="text" onChange={handleSearch}></input>
+      <input type="text" onKeyUp={handleSearch} onChange={getInput}></input>
       <p>{searchInput}</p>
+      <div className="display-mem">{memDisplay}
+      </div>
     </div>
   )
 }
