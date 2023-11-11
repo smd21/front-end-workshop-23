@@ -35,29 +35,31 @@ export default function Tools() {
     }
 
   }
-  const memDisplay = () => {
-    if (displayMem == true) {
+  const display = () => {
+    if (displayMem) {
       return (
         <div>
-          <p>{member.name}</p>
-          <p>{member.fun_fact}</p>
+          <p>Name: {member.name}</p>
+          <p>Fact: {member.fun_fact}</p>
+          <p>Year: {member.year}</p>
         </div>
       )
     } else {
       return (
-        <p>No one of that name T.T</p>
+        <div>
+          <p>This person does not exist</p>
+        </div>
       )
     }
+
   }
+
   return (
     <div>
       <input type="text" onChange={getInput}></input>
       <button onClick={handleSearch}>Search</button>
-      <div>
-        <p>Name: {member.name}</p>
-        <p>Fact: {member.fun_fact}</p>
-        <p>Year: {member.year}</p>
-      </div>
+
+      <div>{display()}</div>
     </div>
   )
 }
