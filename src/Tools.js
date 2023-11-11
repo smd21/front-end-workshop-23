@@ -22,22 +22,21 @@ export default function Tools() {
     var lc = input.target.value.toLowerCase()
     setSearchInput(lc)
   }
-  const handleSearch = (e) => {
-    if (e.key === "Enter") {
-      getMembers()
-      const mem = memData.filter((member) => {
-        return (
-          member.name === searchInput
-        )
-      })
-      if (mem.length > 0) {
-        setMember(mem[0])
-        setDisplayMem(true)
-      }
+  const handleSearch = () => {
+    getMembers()
+    const mem = memData.filter((member) =>
+      member.name.toLowerCase() == searchInput
+    )
+    if (mem.length > 0) {
+      setMember(mem[0])
+      setDisplayMem(true)
+    } else {
+      setMember("name: none")
     }
+
   }
   const memDisplay = () => {
-    if (displayMem === true) {
+    if (displayMem == true) {
       return (
         <div>
           <p>{member.name}</p>
@@ -52,9 +51,12 @@ export default function Tools() {
   }
   return (
     <div>
-      <input type="text" onKeyUp={handleSearch} onChange={getInput}></input>
-      <p>{searchInput}</p>
-      <div className="display-mem">{memDisplay}
+      <input type="text" onChange={getInput}></input>
+      <button onClick={handleSearch}>Search</button>
+      <div>
+        <p>Name: {member.name}</p>
+        <p>Fact: {member.fun_fact}</p>
+        <p>Year: {member.year}</p>
       </div>
     </div>
   )
